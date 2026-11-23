@@ -9,7 +9,9 @@ Dog-products store: storefront, automated order pipeline (PayPal → CJdropshipp
 ```
 packages/core   business rules: money/approval rules, profit math, order lifecycle (tested)
 apps/site       storefront (static generator; live at goodtailco.netlify.app until Cloudflare cut-over)
-apps/worker     backend API on Cloudflare Workers + D1 (Phase 1)
+apps/worker     backend API on Cloudflare Workers (+ D1 in Phase 1); serves dist/site as static assets
 ```
 
-`npm test` runs the core test suite (also runs in CI on every push).
+- `npm test`: unit tests (core rules + worker); CI runs them on every push.
+- `npm run build`: builds the storefront into `dist/site`.
+- Deploy: Cloudflare Workers Builds runs `npm run build` then `npx wrangler deploy` on every push to `main`.

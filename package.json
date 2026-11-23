@@ -3,8 +3,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test \"packages/**/test/*.test.js\"",
-    "build:site": "node apps/site/src/build.js dist/site"
+    "test": "node --test \"packages/**/test/*.test.js\" \"apps/worker/test/*.test.js\"",
+    "build": "node scripts/build-site.mjs"
   },
-  "engines": { "node": ">=20" }
+  "engines": {
+    "node": ">=20"
+  }
 }

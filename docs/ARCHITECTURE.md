@@ -14,8 +14,8 @@ Goal: a dog-products store that takes real orders, pays the supplier, ships, tra
 | Layer | Choice | Why |
 |---|---|---|
 | Code | **GitHub** (private repo) + GitHub Actions | Version control, CI tests, scheduled jobs that need ffmpeg |
-| Storefront | Static site generator (`apps/site`) → **Cloudflare Pages** | Fast, free, deploys on every push; no API tokens needed by Claude |
-| Backend API | **Cloudflare Worker** (`apps/worker`) | Checkout, webhooks, order pipeline, dashboard API; 100k requests/day free |
+| Storefront | Static site generator (`apps/site`, `npm run build` → `dist/site`) served as **static assets of the Cloudflare Worker** | Fast, free, deploys on every push via Cloudflare Workers Builds; no API tokens needed by Claude |
+| Backend API | **Cloudflare Worker** (`apps/worker`, config in `wrangler.jsonc`) — same deployment as the storefront, handles `/api/*` | Checkout, webhooks, order pipeline, dashboard API; 100k requests/day free |
 | Database | **Cloudflare D1** (SQLite) | Orders, customers, products, reviews, emails, approvals, audit log; 5 GB free |
 | Scheduled jobs | Worker **Cron Triggers** (light jobs), **GitHub Actions** (video rendering) | No server to maintain |
 | Admin login | **Cloudflare Access** (free Zero Trust) on `/admin` | One-time-code login on iPhone/Mac; no passwords stored by us |

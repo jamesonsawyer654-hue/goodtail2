@@ -1,0 +1,7 @@
+{
+  // Cloudflare Worker: storefront (static assets) + backend API. Deployed by Cloudflare Workers Builds on every push to main.
+  "name": "goodtail",
+  "main": "apps/worker/src/index.js",
+  "compatibility_date": "2026-11-01",
+  "assets": { "directory": "dist/site", "binding": "ASSETS", "not_found_handling": "404-page" }
+}

@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import worker, { handleApi } from '../src/index.js';
+import worker from '../src/index.js';
+import { handleApi } from '../src/api.js';
 
 test('health reports which integrations are configured, without exposing secrets', async () => {
   const res = await handleApi(new Request('https://x/api/health'), { PAYPAL_CLIENT_ID: 'id', PAYPAL_CLIENT_SECRET: 's3cret' });
@@ -17,4 +18,8 @@ test('non-API requests are served from static assets', async () => {
   const env = { ASSETS: { fetch: async () => new Response('page') } };
   const res = await worker.fetch(new Request('https://x/products/brush.html'), env);
   assert.equal(await res.text(), 'page');
+});
+test('entry module exports only the default handler (Workers runtime requirement)', async () => {
+  const mod = await import('../src/index.js');
+  assert.deepEqual(Object.keys(mod), ['default']);
 });

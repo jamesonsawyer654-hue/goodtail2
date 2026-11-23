@@ -1,7 +1,13 @@
 // Static site generator for Good Tail Co. — reads ../config.js, writes the deployable site to OUT.
 const fs = require('fs'), path = require('path'), vm = require('vm');
 const SRC = path.resolve(__dirname, '..'), OUT = process.argv[2] || '/home/user/good-tail-site';
-const URL0 = 'https://goodtailco.netlify.app';
+const URL0 = process.env.SITE_URL || 'https://goodtail.jamesonsawyer654.workers.dev';
+// Clean URLs: Cloudflare serves /products/brush.html at /products/brush, so links use the clean form.
+const pretty = (f) => '/' + f.replace(/(^|\/)index\.html$/, '$1').replace(/\.html$/, '');
+const prettyLinks = (html) => html.replace(/href="(?!https?:|mailto:|#|data:)([^"#?]*?)\.html(#[^"]*)?"/g, (_, f, h = '') => {
+  const clean = pretty(f.replace(/^\/+/, '') + '.html').replace(/(.)\/$/, '$1');
+  return `href="${clean}${h}"`;
+});
 const ctx = { window: {} }; vm.createContext(ctx); vm.runInContext(fs.readFileSync(`${SRC}/config.js`, 'utf8'), ctx);
 const S = ctx.window.STORE, P = ctx.window.PRODUCTS, K = ctx.window.BUNDLE;
 const money = n => '$' + n.toFixed(2);
@@ -40,8 +46,8 @@ const favicon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><
 const buy = (link, label = 'Buy now', cls = '') => live(link) ? `<a class="btn ${cls}" href="${link}">${label}</a>` : `<button class="btn ${cls}" disabled>Coming soon</button>`;
 
 function page({ file, title, desc, body, active = '', og = 'images/og/home.jpg', jsonld = '', bodyClass = '', root }) {
-  const depth = file.split('/').length - 1, r = root ?? (depth ? '../'.repeat(depth) : '');
-  const canon = `${URL0}/${file === 'index.html' ? '' : file}`;
+  const r = root ?? '/';
+  const canon = `${URL0}${pretty(file)}`;
   const nav = [['index.html#shop', 'Bestsellers', 'shop'], ['products/brush.html', 'Grooming', 'brush'], ['products/roller.html', 'Home', 'roller'], ['products/bottle.html', 'Walks', 'bottle'], ['products/lickmat.html', 'Bath & Calm', 'lickmat'], ['products/kit.html', 'The Kit', 'kit']]
     .map(([h, t, k]) => `<a href="${r}${h}"${active === k ? ' aria-current="page"' : ''}>${t}</a>`).join('');
   const html = `<!doctype html>
@@ -88,7 +94,7 @@ ${body.replace(/\{r\}/g, r)}
 <script src="${r}site.js" defer></script>
 </body></html>`;
   fs.mkdirSync(path.dirname(`${OUT}/${file}`), { recursive: true });
-  fs.writeFileSync(`${OUT}/${file}`, html);
+  fs.writeFileSync(`${OUT}/${file}`, prettyLinks(html));
 }
 
 const pcard = p => `<a class="pcard" href="{r}products/${p.id}.html"><div class="ph"><img src="{r}images/l/${p.id}.jpg" alt="${p.name}" loading="lazy" width="960" height="1200"><span class="badge">${X[p.id].badge}</span></div>
@@ -177,7 +183,7 @@ function pdp(p, isKit = false) {
        <details><summary>In the box &amp; care</summary><ul>${x.box.map(t => `<li>${t}</li>`).join('')}</ul><p>${x.care}</p></details>`;
   const ld = { '@context': 'https://schema.org', '@type': 'Product', name, image: [`${URL0}/images/l/${id}.jpg`], description: isKit ? K.includes : p.short,
     brand: { '@type': 'Brand', name: S.name }, sku: `GTC-${id.toUpperCase()}`,
-    offers: { '@type': 'Offer', price: price.toFixed(2), priceCurrency: 'USD', availability: 'https://schema.org/InStock', url: `${URL0}/products/${id}.html`,
+    offers: { '@type': 'Offer', price: price.toFixed(2), priceCurrency: 'USD', availability: 'https://schema.org/InStock', url: `${URL0}/products/${id}`,
       shippingDetails: { '@type': 'OfferShippingDetails', shippingRate: { '@type': 'MonetaryAmount', value: '0', currency: 'USD' }, shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'US' } } } };
   const others = P.filter(q => q.id !== id);
   page({ file: `products/${id}.html`, active: id, bodyClass: 'pdp-page', og: `images/og/${id}.jpg`, title: `${name} — ${S.name}`,
@@ -254,5 +260,5 @@ fs.writeFileSync(`${OUT}/site.js`, `(() => {
 fs.writeFileSync(`${OUT}/favicon.svg`, favicon);
 fs.writeFileSync(`${OUT}/robots.txt`, `User-agent: *\nAllow: /\nSitemap: ${URL0}/sitemap.xml\n`);
 const urls = ['', 'about.html', 'shipping.html', 'returns.html', 'contact.html', 'privacy.html', 'terms.html', ...P.map(p => `products/${p.id}.html`), 'products/kit.html'];
-fs.writeFileSync(`${OUT}/sitemap.xml`, `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(u => `  <url><loc>${URL0}/${u}</loc></url>`).join('\n')}\n</urlset>\n`);
+fs.writeFileSync(`${OUT}/sitemap.xml`, `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(u => `  <url><loc>${URL0}${pretty(u || 'index.html')}</loc></url>`).join('\n')}\n</urlset>\n`);
 console.log('built', OUT);

@@ -5,7 +5,8 @@
   "scripts": {
     "test": "node --test \"packages/**/test/*.test.js\" \"apps/worker/test/*.test.js\"",
     "build": "node scripts/build-site.mjs",
-    "qa": "node scripts/qa-site.cjs"
+    "qa": "node scripts/qa-site.cjs",
+    "e2e": "node scripts/e2e-shop.cjs"
   },
   "engines": {
     "node": ">=20"

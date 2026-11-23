@@ -1,0 +1,122 @@
+{
+  "store": {
+    "name": "Good Tail Co.",
+    "tagline": "Small upgrades for happier pets.",
+    "email": "jamesonsawyer654@gmail.com",
+    "shippingText": "Free shipping on every order",
+    "shippingTime": "7–12 business days",
+    "returnDays": 30,
+    "businessAddress": ""
+  },
+  "products": [
+    {
+      "id": "brush",
+      "sku": "GTC-BRUSH",
+      "name": "One-Click Self-Cleaning Brush",
+      "price": 19.99,
+      "short": "Pulls out loose undercoat in minutes. Press the button and the fur slides right off the brush.",
+      "bullets": [
+        "Fine bent bristles reach the loose undercoat",
+        "Push-button retracts the bristles so fur wipes off in one swipe",
+        "For dogs and cats with short or long coats",
+        "Comfortable grip, rinses clean"
+      ],
+      "image": "images/l/brush.jpg",
+      "hero": true,
+      "active": true,
+      "estLandedCostUsd": 9,
+      "supplier": {
+        "cj": {
+          "pid": null,
+          "vid": null
+        }
+      }
+    },
+    {
+      "id": "roller",
+      "sku": "GTC-ROLLER",
+      "name": "Reusable Pet Hair Remover",
+      "price": 19.99,
+      "short": "Roll it back and forth on the couch and the hair collects in the chamber. No sticky sheets to keep buying.",
+      "bullets": [
+        "No batteries and no refills",
+        "Works on couches, beds and car seats",
+        "Open the chamber and empty it in seconds",
+        "Reusable, so you skip the sticky lint sheets"
+      ],
+      "image": "images/l/roller.jpg",
+      "hero": false,
+      "active": true,
+      "estLandedCostUsd": 9.5,
+      "supplier": {
+        "cj": {
+          "pid": null,
+          "vid": null
+        }
+      }
+    },
+    {
+      "id": "bottle",
+      "sku": "GTC-BOTTLE",
+      "name": "Walk-Ready Dog Water Bottle",
+      "price": 21.99,
+      "short": "Press to fill the fold-out bowl, then tip the leftover water back into the bottle. Nothing gets wasted.",
+      "bullets": [
+        "Lock button keeps it from leaking in your bag",
+        "One-hand operation on walks and hikes",
+        "Wide drinking trough for big and small dogs",
+        "Wrist strap for easy carrying"
+      ],
+      "image": "images/l/bottle.jpg",
+      "hero": false,
+      "active": true,
+      "estLandedCostUsd": 11,
+      "supplier": {
+        "cj": {
+          "pid": null,
+          "vid": null
+        }
+      }
+    },
+    {
+      "id": "lickmat",
+      "sku": "GTC-LICKMAT",
+      "name": "Calm-Down Lick Mat (2-Pack)",
+      "price": 12.99,
+      "short": "Spread on xylitol-free peanut butter or yogurt and stick it to the tub. Bath time and nail trims get a lot easier.",
+      "bullets": [
+        "Flexible silicone, easy to rinse clean",
+        "Suction back sticks to tile, tubs and walls",
+        "Keeps pets busy and slows down fast eaters",
+        "2 mats per pack"
+      ],
+      "image": "images/l/lickmat.jpg",
+      "hero": false,
+      "active": true,
+      "estLandedCostUsd": 8,
+      "supplier": {
+        "cj": {
+          "pid": null,
+          "vid": null
+        }
+      }
+    }
+  ],
+  "bundles": [
+    {
+      "id": "kit",
+      "sku": "GTC-KIT",
+      "name": "The Shed-Free Home Kit",
+      "price": 39.99,
+      "includes": "Self-Cleaning Brush + Hair Remover + Lick Mat 2-Pack",
+      "components": [
+        "brush",
+        "roller",
+        "lickmat"
+      ],
+      "image": "images/l/kit.jpg",
+      "active": true,
+      "estLandedCostUsd": 20
+    }
+  ]
+}

@@ -14,7 +14,7 @@ export const STATUSES = Object.freeze([
 ]);
 
 const NEXT = {
-  pending_payment: ['paid', 'cancelled'],
+  pending_payment: ['paid', 'cancelled', 'needs_attention'],
   paid: ['supplier_ordered', 'awaiting_approval', 'needs_attention', 'cancelled', 'refunded'],
   awaiting_approval: ['supplier_ordered', 'cancelled', 'refunded', 'needs_attention'],
   supplier_ordered: ['shipped', 'needs_attention', 'refunded'],

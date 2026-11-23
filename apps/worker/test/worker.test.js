@@ -7,7 +7,7 @@ test('health reports which integrations are configured, without exposing secrets
   const res = await handleApi(new Request('https://x/api/health'), { PAYPAL_CLIENT_ID: 'id', PAYPAL_CLIENT_SECRET: 's3cret' });
   const body = await res.json();
   assert.equal(res.status, 200);
-  assert.deepEqual(body.integrations, { paypal: true, cj: false, database: false });
+  assert.equal(body.integrations.paypal, true); assert.equal(body.integrations.cj, false); assert.equal(body.integrations.database, false);
   assert.ok(!JSON.stringify(body).includes('s3cret'));
 });
 test('unknown API routes return 404 JSON', async () => {

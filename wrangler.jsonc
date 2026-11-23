@@ -3,5 +3,9 @@
   "name": "goodtail",
   "main": "apps/worker/src/index.js",
   "compatibility_date": "2026-11-01",
-  "assets": { "directory": "dist/site", "binding": "ASSETS", "not_found_handling": "404-page" }
+  "assets": { "directory": "dist/site", "binding": "ASSETS", "not_found_handling": "404-page" },
+  // Order database (Cloudflare D1). Schema migrations are applied by the Worker itself (apps/worker/src/db.js).
+  "d1_databases": [{ "binding": "DB", "database_name": "goodtail-db", "database_id": "40a58a82-5048-4d3b-a83c-bb9ca37facc2" }],
+  // Public settings. Secrets (PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET, CJ_API_KEY) are set in the Cloudflare dashboard, never here.
+  "vars": { "PAYPAL_ENV": "sandbox" }
 }

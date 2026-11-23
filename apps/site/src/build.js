@@ -1,5 +1,5 @@
 // Static site generator for Good Tail Co. — reads ../config.js, writes the deployable site to OUT.
-const fs = require('fs'), path = require('path'), vm = require('vm');
+const fs = require('fs'), path = require('path');
 const SRC = path.resolve(__dirname, '..'), OUT = process.argv[2] || '/home/user/good-tail-site';
 const URL0 = process.env.SITE_URL || 'https://goodtail.jamesonsawyer654.workers.dev';
 // Clean URLs: Cloudflare serves /products/brush.html at /products/brush, so links use the clean form.
@@ -8,10 +8,10 @@ const prettyLinks = (html) => html.replace(/href="(?!https?:|mailto:|#|data:)([^
   const clean = pretty(f.replace(/^\/+/, '') + '.html').replace(/(.)\/$/, '$1');
   return `href="${clean}${h}"`;
 });
-const ctx = { window: {} }; vm.createContext(ctx); vm.runInContext(fs.readFileSync(`${SRC}/config.js`, 'utf8'), ctx);
-const S = ctx.window.STORE, P = ctx.window.PRODUCTS, K = ctx.window.BUNDLE;
+// Single source of truth shared with the checkout server: catalog/products.json
+const CAT = JSON.parse(fs.readFileSync(path.resolve(SRC, '../../catalog/products.json'), 'utf8'));
+const S = CAT.store, P = CAT.products.filter(p => p.active), K = CAT.bundles.find(b => b.id === 'kit');
 const money = n => '$' + n.toFixed(2);
-const live = l => l && l !== '#';
 const KIT_IDS = ['brush', 'roller', 'lickmat'];
 const kitValue = KIT_IDS.reduce((a, id) => a + P.find(p => p.id === id).price, 0);
 const save = money(kitValue - K.price);
@@ -43,9 +43,9 @@ const KIT_WHY = 'Shedding season hits the whole house: the dog, the couch and ba
 
 const pawMark = `<svg viewBox="0 0 100 100" aria-hidden="true"><g fill="currentColor"><ellipse cx="50" cy="66" rx="22" ry="18"/><ellipse cx="24" cy="44" rx="9" ry="12" transform="rotate(-20 24 44)"/><ellipse cx="40" cy="28" rx="9" ry="12" transform="rotate(-6 40 28)"/><ellipse cx="60" cy="28" rx="9" ry="12" transform="rotate(6 60 28)"/><ellipse cx="76" cy="44" rx="9" ry="12" transform="rotate(20 76 44)"/></g></svg>`;
 const favicon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#111"/><g fill="#fff" transform="translate(16 14) scale(.68)"><ellipse cx="50" cy="66" rx="22" ry="18"/><ellipse cx="24" cy="44" rx="9" ry="12" transform="rotate(-20 24 44)"/><ellipse cx="40" cy="28" rx="9" ry="12" transform="rotate(-6 40 28)"/><ellipse cx="60" cy="28" rx="9" ry="12" transform="rotate(6 60 28)"/><ellipse cx="76" cy="44" rx="9" ry="12" transform="rotate(20 76 44)"/></g></svg>`;
-const buy = (link, label = 'Buy now', cls = '') => live(link) ? `<a class="btn ${cls}" href="${link}">${label}</a>` : `<button class="btn ${cls}" disabled>Coming soon</button>`;
+const addBtn = (sku, label, cls = '') => `<button type="button" class="btn ${cls}" data-add="${sku}">${label}</button>`;
 
-function page({ file, title, desc, body, active = '', og = 'images/og/home.jpg', jsonld = '', bodyClass = '', root }) {
+function page({ file, title, desc, body, active = '', og = 'images/og/home.jpg', jsonld = '', bodyClass = '', root, noindex = false }) {
   const r = root ?? '/';
   const canon = `${URL0}${pretty(file)}`;
   const nav = [['index.html#shop', 'Bestsellers', 'shop'], ['products/brush.html', 'Grooming', 'brush'], ['products/roller.html', 'Home', 'roller'], ['products/bottle.html', 'Walks', 'bottle'], ['products/lickmat.html', 'Bath & Calm', 'lickmat'], ['products/kit.html', 'The Kit', 'kit']]
@@ -62,7 +62,7 @@ function page({ file, title, desc, body, active = '', og = 'images/og/home.jpg',
 <meta property="og:title" content="${title}"><meta property="og:description" content="${desc}">
 <meta property="og:url" content="${canon}"><meta property="og:image" content="${URL0}/${og}">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#ffffff">${noindex ? '\n<meta name="robots" content="noindex">' : ''}
 <link rel="icon" href="${r}favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -75,7 +75,8 @@ ${jsonld ? `<script type="application/ld+json">${jsonld}</script>` : ''}
 <header class="header"><div class="wrap">
   <a class="logo" href="${r}index.html">${pawMark}${S.name}</a>
   <nav class="nav" aria-label="Main">${nav}</nav>
-  <div class="hdr-right"><a class="hide-md" href="${r}shipping.html">Shipping</a><a href="${r}contact.html">Help</a></div>
+  <div class="hdr-right"><a class="hide-md" href="${r}track.html">Track order</a><a href="${r}contact.html">Help</a></div>
+  <a class="bag-link" href="${r}cart.html">Bag (<span data-bag-count>0</span>)</a>
   <button class="menu-btn" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
 </div></header>
 <main id="main">
@@ -168,7 +169,7 @@ page({ file: 'index.html', active: 'shop', title: `${S.name} — Simple tools fo
 // ---------- PRODUCT PAGES ----------
 function pdp(p, isKit = false) {
   const id = isKit ? 'kit' : p.id, x = isKit ? null : X[id];
-  const name = isKit ? K.name : p.name, price = isKit ? K.price : p.price, link = isKit ? K.buyLink : p.buyLink;
+  const name = isKit ? K.name : p.name, price = isKit ? K.price : p.price, sku = isKit ? K.sku : p.sku;
   const tiles = isKit
     ? [`<div><img src="{r}images/l/kit.jpg" alt="${name}" width="960" height="1200"></div>`, ...KIT_IDS.map(i => `<div><img src="{r}images/l/${i}.jpg" alt="" loading="lazy"></div>`)]
     : [`<div><img src="{r}images/l/${id}.jpg" alt="${name}" width="960" height="1200"></div>`,
@@ -197,8 +198,8 @@ function pdp(p, isKit = false) {
     <div class="price">${money(price)}${isKit ? `<s>${money(kitValue)}</s><span class="save">Save ${save}</span>` : ''}</div>
     <p class="desc">${isKit ? 'Everything for shedding season and calm bath time, in one box.' : p.short}</p>
     <ul class="pts">${pts.map(b => `<li>${b}</li>`).join('')}</ul>
-    ${buy(link, `Buy now · ${money(price)}`, 'block')}
-    <p class="note">Pay with PayPal, Venmo or card · choose quantity at checkout</p>
+    ${addBtn(sku, `Add to bag · ${money(price)}`, 'block')}
+    <p class="note">Pay with PayPal, Venmo or card at checkout</p>
     <div class="svc"><div><span>🚚</span><span><b>Free US shipping.</b> Ships in 1–3 business days, arrives in ${S.shippingTime} with tracking.</span></div>
       <div><span>↩️</span><span><b>${S.returnDays}-day returns.</b> Damaged, wrong or lost? Free replacement or full refund.</span></div>
       <div><span>💬</span><span><b>Real human support.</b> <a class="link" href="mailto:${S.email}">Email us</a>, we reply within 24 hours.</span></div></div>
@@ -209,7 +210,7 @@ function pdp(p, isKit = false) {
 <section class="why"><div class="wrap"><h2>Why we made this</h2><p>${isKit ? KIT_WHY : x.why}</p></div></section>
 <section class="sec"><div class="wrap"><div class="sec-top"><div><h2>You may also like</h2></div></div>
   <div class="row">${(isKit ? P : others).slice(0, 4).map(pcard).join('')}${isKit ? '' : (others.length < 4 ? kitcard : '')}</div></div></section>
-<div class="sticky-buy"><div><b>${money(price)}</b><div style="font-size:12px;color:var(--muted)">Free US shipping</div></div>${buy(link, 'Buy now')}</div>
+<div class="sticky-buy"><div><b>${money(price)}</b><div style="font-size:12px;color:var(--muted)">Free US shipping</div></div>${addBtn(sku, 'Add to bag')}</div>
 ` });
 }
 P.forEach(p => pdp(p)); pdp(null, true);
@@ -238,25 +239,43 @@ for (const [f, t] of [['shipping', 'Shipping & delivery'], ['returns', 'Returns 
 }
 
 // ---------- THANKS + 404 ----------
-page({ file: 'thanks.html', title: `Thank you — ${S.name}`, desc: 'Order confirmed.', body: `
+page({ file: 'thanks.html', noindex: true, title: `Thank you — ${S.name}`, desc: 'Order confirmed.', body: `
 <div class="pagehead"><div class="wrap"><p class="label">Order confirmed</p><h1>Thank you.</h1></div></div>
 <div class="prose" style="text-align:center"><p>Your receipt is on its way to your inbox. Your order ships within 1–3 business days, and we’ll email your tracking number as soon as it does.</p>
+<p id="order-ref"></p>
 <p>Usual delivery time: <b>${S.shippingTime}</b>. Questions? Email <a class="link" href="mailto:${S.email}">${S.email}</a>.</p>
 <p style="margin-top:30px"><a class="btn" href="{r}index.html">Continue shopping</a></p></div>` });
 page({ file: '404.html', root: '/', title: `Page not found — ${S.name}`, desc: 'Page not found.', body: `
 <div class="pagehead"><div class="wrap"><p class="label">404</p><h1>This page went for a walk.</h1></div></div>
 <div class="prose" style="text-align:center"><p>We couldn’t find that page.</p><p style="margin-top:24px"><a class="btn" href="/index.html">Go to the shop</a></p></div>` });
 
+// ---------- BAG + TRACK ----------
+const sellable = Object.fromEntries([...P, K].map(x => [x.sku, { name: x.name, price: x.price, image: '/' + x.image, url: `/products/${x.id}` }]));
+page({ file: 'cart.html', noindex: true, title: `Your bag — ${S.name}`, desc: 'Your shopping bag.', body: `
+<div class="pagehead"><div class="wrap"><h1>Your bag</h1></div></div>
+<div class="wrap cart" id="cart">
+  <div id="bag-lines"></div>
+  <aside class="summary">
+    <div class="row"><span>Subtotal</span><span id="bag-sub">$0.00</span></div>
+    <div class="row"><span>Shipping</span><span>Free</span></div>
+    <div class="row total"><span>Total</span><span id="bag-total">$0.00</span></div>
+    <div id="paypal-buttons"></div>
+    <p class="note" id="checkout-msg">Loading secure checkout…</p>
+    <p class="note">Free US shipping · ${S.returnDays}-day returns · ships in 1–3 business days</p>
+  </aside>
+</div>
+<script type="application/json" id="catalog-data">${JSON.stringify(sellable)}</script>` });
+page({ file: 'track.html', noindex: true, title: `Track your order — ${S.name}`, desc: 'Track your Good Tail Co. order.', body: `
+<div class="pagehead"><div class="wrap"><p class="label">Orders</p><h1>Track your order</h1></div></div>
+<div class="prose"><form id="track-form" class="track-form">
+  <label>Order number<input name="number" required placeholder="GT-XXXXXXXX" autocomplete="off" pattern="[Gg][Tt]-[A-Za-z0-9]{8}"></label>
+  <label>Email used at checkout<input name="email" type="email" required autocomplete="email"></label>
+  <button class="btn" type="submit">Find my order</button></form>
+  <div id="track-result" class="track-result" aria-live="polite"></div></div>` });
+
 // ---------- assets ----------
 fs.copyFileSync(`${__dirname}/style.css`, `${OUT}/style.css`);
-fs.writeFileSync(`${OUT}/site.js`, `(() => {
-  const h = document.querySelector('.header'), b = document.querySelector('.menu-btn');
-  b && b.addEventListener('click', () => { const o = h.classList.toggle('open'); b.setAttribute('aria-expanded', o); });
-  if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver(es => es.forEach(e => { const v = e.target; if (e.isIntersecting) { v.play().catch(() => {}); } else { v.pause(); } }), { threshold: .35 });
-    document.querySelectorAll('video[muted]').forEach(v => io.observe(v));
-  }
-})();\n`);
+fs.copyFileSync(`${__dirname}/site.js`, `${OUT}/site.js`);
 fs.writeFileSync(`${OUT}/favicon.svg`, favicon);
 fs.writeFileSync(`${OUT}/robots.txt`, `User-agent: *\nAllow: /\nSitemap: ${URL0}/sitemap.xml\n`);
 const urls = ['', 'about.html', 'shipping.html', 'returns.html', 'contact.html', 'privacy.html', 'terms.html', ...P.map(p => `products/${p.id}.html`), 'products/kit.html'];

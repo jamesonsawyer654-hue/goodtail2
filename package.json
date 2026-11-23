@@ -1,0 +1,10 @@
+{
+  "name": "goodtail",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test \"packages/**/test/*.test.js\"",
+    "build:site": "node apps/site/src/build.js dist/site"
+  },
+  "engines": { "node": ">=20" }
+}

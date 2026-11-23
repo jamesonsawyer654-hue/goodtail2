@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contact — {store}</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css"></head><body>
+<header class="nav"><div class="wrap"><a class="logo" href="index.html"><span>●</span> <b data-s="name"></b></a>
+<nav class="nav-links"><a href="index.html#shop" class="keep">Shop</a><a href="contact.html">Contact</a></nav></div></header>
+<main class="policy">
+<h1>Contact us</h1>
+<p>We're a small team and we reply to every message, usually within a few hours and always within 24.</p>
+<h2>Email</h2><p style="font-size:20px"><a data-s="email"></a></p>
+<h2>About your order</h2><p>Please include the transaction ID from your PayPal receipt email so we can help you faster.</p>
+<div data-addr><h2>Mailing address</h2><p><span data-s="businessAddress"></span></p></div>
+<p><em>Please don't mail returns without emailing us first. We'll send you the correct return address.</em></p>
+<p><em>Last updated: November 2026</em></p>
+</main>
+<footer><div class="wrap"><div>© <span id="year"></span> <span data-s="name"></span></div>
+<div><a href="shipping.html">Shipping</a><a href="returns.html">Returns</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="contact.html">Contact</a></div></div></footer>
+<script src="config.js"></script><script src="app.js"></script>
+<script>document.querySelectorAll('a[data-s="email"]').forEach(a => a.href = "mailto:" + STORE.email);</script>
+</body></html>

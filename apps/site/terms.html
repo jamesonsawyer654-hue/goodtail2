@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Terms of Service — {store}</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css"></head><body>
+<header class="nav"><div class="wrap"><a class="logo" href="index.html"><span>●</span> <b data-s="name"></b></a>
+<nav class="nav-links"><a href="index.html#shop" class="keep">Shop</a><a href="contact.html">Contact</a></nav></div></header>
+<main class="policy">
+<h1>Terms of Service</h1>
+<p>By using this website or placing an order with <span data-s="name"></span>, you agree to these terms.</p>
+<h2>Orders</h2><p>All orders are subject to availability. We may refuse or cancel an order, for example if we suspect fraud or a pricing error. If we cancel, you'll get a full refund.</p>
+<h2>Pricing</h2><p>Prices are in US dollars and may change without notice. The price you pay is the price shown at checkout.</p>
+<h2>Product use</h2><p>Always supervise your pet when they use a new product. Stop using any product that appears damaged, and check with your veterinarian if you have concerns about your pet's health. Our products are not intended to diagnose or treat any medical condition.</p>
+<h2>Shipping &amp; returns</h2><p>See our <a href="shipping.html">Shipping Policy</a> and <a href="returns.html">Returns Policy</a>.</p>
+<h2>Limitation of liability</h2><p>To the extent the law allows, our liability for any claim is limited to the amount you paid for the product.</p>
+<h2>Changes</h2><p>We may update these terms. The current version is always on this page.</p>
+<h2>Contact</h2><p><a data-s="email"></a><span data-addr> · <span data-s="businessAddress"></span></span></p>
+<p><em>Last updated: November 2026</em></p>
+</main>
+<footer><div class="wrap"><div>© <span id="year"></span> <span data-s="name"></span></div>
+<div><a href="shipping.html">Shipping</a><a href="returns.html">Returns</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="contact.html">Contact</a></div></div></footer>
+<script src="config.js"></script><script src="app.js"></script>
+<script>document.querySelectorAll('a[data-s="email"]').forEach(a => a.href = "mailto:" + STORE.email);</script>
+</body></html>

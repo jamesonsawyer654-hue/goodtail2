@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shipping Policy — {store}</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css"></head><body>
+<header class="nav"><div class="wrap"><a class="logo" href="index.html"><span>●</span> <b data-s="name"></b></a>
+<nav class="nav-links"><a href="index.html#shop" class="keep">Shop</a><a href="contact.html">Contact</a></nav></div></header>
+<main class="policy">
+<h1>Shipping Policy</h1>
+<h2>Cost</h2><p>Shipping is free on all orders.</p>
+<h2>Processing time</h2><p>Orders are processed within 1–3 business days after payment. You'll receive an email with your tracking number once your order ships.</p>
+<h2>Delivery time</h2><p>Most orders arrive in <span data-s="shippingTime"></span> after shipping. Delivery times are estimates and may be longer during holidays or carrier delays. If your order is delayed, we'll email you with an update and give you the option to cancel for a full refund.</p>
+<h2>Where we ship</h2><p>We currently ship to addresses in the United States.</p>
+<h2>Multiple packages</h2><p>Items in the same order may ship from different warehouses and arrive in separate packages.</p>
+<h2>Lost or damaged packages</h2><p>If tracking shows no movement for 10 business days, or your item arrives damaged, email <a data-s="email"></a> with your order number and a photo (if damaged). We'll send a replacement or a full refund.</p>
+<h2>Wrong address</h2><p>Please double-check your address at checkout. If you spot a mistake, email us within 12 hours and we'll fix it before the order ships.</p>
+<p><em>Last updated: November 2026</em></p>
+</main>
+<footer><div class="wrap"><div>© <span id="year"></span> <span data-s="name"></span></div>
+<div><a href="shipping.html">Shipping</a><a href="returns.html">Returns</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="contact.html">Contact</a></div></div></footer>
+<script src="config.js"></script><script src="app.js"></script>
+<script>document.querySelectorAll('a[data-s="email"]').forEach(a => a.href = "mailto:" + STORE.email);</script>
+</body></html>

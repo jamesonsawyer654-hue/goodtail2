@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+<defs>
+  <radialGradient id="bg-kit" cx="50%" cy="38%" r="75%">
+    <stop offset="0" stop-color="#fff7e8"/><stop offset="1" stop-color="#ffd48f"/>
+  </radialGradient>
+  <filter id="drop" x="-30%" y="-30%" width="160%" height="160%">
+    <feDropShadow dx="0" dy="16" stdDeviation="16" flood-color="#2b2118" flood-opacity=".22"/>
+  </filter>
+  <filter id="blur"><feGaussianBlur stdDeviation="14"/></filter>
+  <filter id="soft"><feGaussianBlur stdDeviation="2"/></filter>
+  <linearGradient id="br-body" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e3e8ee"/></linearGradient>
+  <linearGradient id="br-handle" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffa477"/><stop offset="1" stop-color="#f06a32"/></linearGradient>
+  <radialGradient id="br-pad" cx="45%" cy="40%" r="70%"><stop offset="0" stop-color="#eef1f5"/><stop offset="1" stop-color="#d5dbe3"/></radialGradient>
+  <pattern id="br-pins" width="13" height="13" patternUnits="userSpaceOnUse">
+    <line x1="3" y1="11" x2="8" y2="4" stroke="#7d8796" stroke-width="1.7" stroke-linecap="round"/>
+    <circle cx="8" cy="4" r="1.9" fill="#4b5563"/>
+  </pattern>
+  <linearGradient id="fur" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f6ead9"/><stop offset="1" stop-color="#d9c2a2"/></linearGradient>
+  <linearGradient id="ro-body" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e6ebf4"/></linearGradient>
+  <linearGradient id="ro-accent" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9db4ff"/><stop offset="1" stop-color="#5f82f0"/></linearGradient>
+  <pattern id="ro-fabric" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
+    <rect width="12" height="12" fill="#e2536a"/><rect width="5" height="12" fill="#cc3f57"/>
+  </pattern>
+  <linearGradient id="ro-shine" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".18"/></linearGradient>
+  <clipPath id="ro-win"><rect x="272" y="196" width="256" height="112" rx="32"/></clipPath>
+  <linearGradient id="lm-a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9ee2b8"/><stop offset="1" stop-color="#5cc28a"/></linearGradient>
+  <linearGradient id="lm-b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b7c9ff"/><stop offset="1" stop-color="#7c98f2"/></linearGradient>
+  <pattern id="lm-dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="11" cy="11" r="6" fill="#6f8ae6"/><circle cx="9" cy="9" r="2.5" fill="#d8e2ff"/></pattern>
+  <pattern id="lm-ridge" width="18" height="18" patternUnits="userSpaceOnUse"><path d="M0,9 q4.5,-7 9,0 t9,0" stroke="#6f8ae6" stroke-width="4" fill="none"/></pattern>
+  <pattern id="lm-lines" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="7" height="16" fill="#6f8ae6"/></pattern>
+  <pattern id="lm-gdots" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="12" cy="12" r="7" fill="#4fae7a"/></pattern>
+  <linearGradient id="pb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d9a066"/><stop offset="1" stop-color="#b9783e"/></linearGradient></defs>
+<rect width="800" height="800" fill="url(#bg-kit)"/>
+<circle cx="400" cy="380" r="300" fill="#fff" opacity=".28"/>
+<ellipse cx="400" cy="705" rx="230" ry="26" fill="#2b2118" opacity=".16" filter="url(#blur)"/>
+<g transform="translate(30,40) scale(.62)">
+  <!-- back mat (green) with suction cups -->
+  <g filter="url(#drop)" transform="rotate(-14 330 330)">
+    <rect x="150" y="150" width="360" height="360" rx="54" fill="url(#lm-a)" stroke="#4fae7a" stroke-width="4"/>
+    <rect x="186" y="186" width="288" height="288" rx="36" fill="url(#lm-gdots)" opacity=".85"/>
+  </g>
+  <!-- front mat (blue), 4 textures -->
+  <g filter="url(#drop)" transform="rotate(9 460 460)">
+    <rect x="270" y="270" width="380" height="380" rx="56" fill="url(#lm-b)" stroke="#6f8ae6" stroke-width="4"/>
+    <rect x="304" y="304" width="148" height="148" rx="22" fill="url(#lm-dots)"/>
+    <rect x="468" y="304" width="148" height="148" rx="22" fill="url(#lm-ridge)"/>
+    <rect x="304" y="468" width="148" height="148" rx="22" fill="url(#lm-lines)"/>
+    <g fill="none" stroke="#6f8ae6" stroke-width="7"><circle cx="542" cy="542" r="62"/><circle cx="542" cy="542" r="40"/><circle cx="542" cy="542" r="18"/></g>
+    <!-- xylitol-free peanut butter smear -->
+    <path d="M478,330 C520,306 600,318 604,356 C608,392 560,404 520,396 C486,390 452,362 478,330 Z" fill="url(#pb)"/>
+    <path d="M496,336 C526,322 572,328 584,348" stroke="#f1c48f" stroke-width="7" fill="none" stroke-linecap="round"/>
+  </g>
+</g><g transform="translate(318,150) scale(.6) rotate(14 400 440)"><g filter="url(#drop)">
+  <!-- handle -->
+  <rect x="362" y="420" width="76" height="300" rx="38" fill="url(#ro-body)" stroke="#d5dceb" stroke-width="3"/>
+  <rect x="377" y="470" width="46" height="200" rx="23" fill="url(#ro-accent)"/>
+  <g stroke="#c7d3ff" stroke-width="3" stroke-linecap="round" opacity=".8"><line x1="390" y1="510" x2="410" y2="510"/><line x1="390" y1="540" x2="410" y2="540"/><line x1="390" y1="570" x2="410" y2="570"/><line x1="390" y1="600" x2="410" y2="600"/></g>
+  <!-- head housing -->
+  <rect x="236" y="160" width="328" height="290" rx="64" fill="url(#ro-body)" stroke="#d5dceb" stroke-width="3"/>
+  <!-- see-through fur chamber -->
+  <rect x="272" y="196" width="256" height="112" rx="32" fill="#dfe7ff" stroke="#b9c8f5" stroke-width="3"/>
+  <g clip-path="url(#ro-win)">
+    <path d="M272,300 C300,250 330,262 352,246 C372,226 412,238 430,250 C452,232 494,240 528,268 L528,320 L272,320 Z" fill="#e8d8c0"/>
+    <path d="M290,296 q20,-14 40,-2 M360,278 q22,-12 44,0 M440,282 q20,-10 40,2" stroke="#cdb08a" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <rect x="272" y="196" width="256" height="40" fill="#fff" opacity=".35"/>
+  </g>
+  <!-- release button -->
+  <rect x="364" y="142" width="72" height="30" rx="15" fill="url(#ro-accent)"/>
+  <!-- fabric roller drum -->
+  <rect x="226" y="326" width="348" height="112" rx="56" fill="url(#ro-fabric)"/>
+  <rect x="226" y="326" width="348" height="112" rx="56" fill="url(#ro-shine)"/>
+  <ellipse cx="236" cy="382" rx="22" ry="54" fill="#cdd6e8"/><ellipse cx="564" cy="382" rx="22" ry="54" fill="#cdd6e8"/>
+</g>
+  <!-- loose hairs being picked up -->
+  <g stroke="#a88a62" stroke-width="3" stroke-linecap="round" fill="none" opacity=".75">
+    <path d="M200,520 q14,-10 28,0"/><path d="M178,560 q12,-14 30,-4"/><path d="M590,520 q14,-12 30,0"/><path d="M612,560 q10,-10 24,-2"/>
+  </g>
+</g><g transform="translate(70,226) scale(.62) rotate(-22 400 430)"><g filter="url(#drop)">
+  <!-- handle -->
+  <path d="M368,452 L432,452 C442,545 456,628 454,682 Q452,738 400,738 Q348,738 346,682 C344,628 358,545 368,452 Z" fill="url(#br-handle)"/>
+  <path d="M382,520 L418,520 C424,580 430,630 429,668 Q428,690 400,690 Q372,690 371,668 C370,630 376,580 382,520 Z" fill="#e2602b" opacity=".55"/>
+  <g stroke="#ffb08a" stroke-width="3" stroke-linecap="round" opacity=".7">
+    <line x1="386" y1="560" x2="414" y2="560"/><line x1="385" y1="585" x2="415" y2="585"/><line x1="384" y1="610" x2="416" y2="610"/><line x1="384" y1="635" x2="416" y2="635"/>
+  </g>
+  <circle cx="400" cy="712" r="9" fill="#ffd9c4"/>
+  <!-- head -->
+  <ellipse cx="400" cy="300" rx="186" ry="160" fill="url(#br-body)" stroke="#cfd6df" stroke-width="3"/>
+  <ellipse cx="400" cy="300" rx="154" ry="128" fill="url(#br-pad)"/>
+  <ellipse cx="400" cy="300" rx="154" ry="128" fill="url(#br-pins)"/>
+  <ellipse cx="400" cy="300" rx="154" ry="128" fill="none" stroke="#c3cad4" stroke-width="3"/>
+  <!-- highlight -->
+  <path d="M262,236 Q300,170 380,156" stroke="#fff" stroke-width="10" stroke-linecap="round" fill="none" opacity=".9"/>
+  <!-- push button -->
+  <circle cx="400" cy="458" r="30" fill="#fff" stroke="#cfd6df" stroke-width="3"/>
+  <circle cx="400" cy="458" r="19" fill="url(#br-handle)"/>
+  <circle cx="394" cy="451" r="5" fill="#fff" opacity=".8"/>
+</g>
+  <!-- fur tuft sliding off -->
+  <g transform="translate(470,170) rotate(14)">
+    <path d="M0,40 C-10,10 25,-8 45,8 C60,-12 100,-4 102,22 C130,18 146,48 128,66 C140,88 112,110 88,98 C72,118 30,116 22,94 C-6,98 -22,62 0,40 Z" fill="url(#fur)" stroke="#cdb08a" stroke-width="2"/>
+    <g stroke="#c4a37a" stroke-width="2" stroke-linecap="round" fill="none" opacity=".8">
+      <path d="M22,46 q18,-10 36,0"/><path d="M50,70 q20,-12 40,0"/><path d="M70,40 q14,-8 28,2"/><path d="M30,80 q10,-6 20,0"/>
+    </g>
+  </g>
+  <g stroke="#ffffff" stroke-width="7" stroke-linecap="round" opacity=".9">
+    <line x1="640" y1="210" x2="690" y2="196"/><line x1="650" y1="245" x2="712" y2="236"/><line x1="640" y1="280" x2="684" y2="276"/>
+  </g>
+</g>
+</svg>

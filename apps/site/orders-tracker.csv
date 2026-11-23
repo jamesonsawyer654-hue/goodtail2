@@ -1,0 +1,2 @@
+Date,PayPal Transaction ID,Customer,Product,Charged ($),Paid to CJ ($),PayPal fee ($),Profit ($),CJ Order #,Tracking #,Tracking added in PayPal?,Status,Notes
+2026-11-25,EXAMPLE123,EXAMPLE - delete this row,Self-Cleaning Brush,19.99,9.00,"=ROUND(E2*0.0349+0.49,2)",=E2-F2-G2,CJ123456,YT0000000000,Yes,Shipped,Copy the fee and profit formulas down for new rows
